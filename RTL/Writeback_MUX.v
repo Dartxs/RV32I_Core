@@ -1,25 +1,3 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 02/08/2026 08:45:25 PM
-// Design Name: 
-// Module Name: writeback_mux
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 module Writeback_MUX(
     input [1:0] writeback_ctrl,
     input [31:0] ALU_out, mem_out, default_PC, imm, //note PC should be current PC+4

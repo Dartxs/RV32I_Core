@@ -1,0 +1,5 @@
+#python
+cocotb_env/
+
+#IDE
+.vscode/
