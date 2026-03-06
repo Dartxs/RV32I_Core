@@ -1,5 +1,10 @@
 #python
 .venv/
+__pycache__/
 
 #IDE
 .vscode/
+
+#Build artifacts
+sim_build/
+*.xml
