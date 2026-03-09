@@ -1,5 +1,5 @@
 module Data_Memory(
-    input clk, reset, mem_write, mem_read,
+    input clk, rst_n, mem_write, mem_read,
     input [2:0] funct3,
     input [31:0] address, write_data,
     output reg [31:0] read_data

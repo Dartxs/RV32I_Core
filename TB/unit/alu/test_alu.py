@@ -79,7 +79,7 @@ async def run_case_dir(dut, op1, op2, operation): #directed test cases
     dut.op1.value = op1
     dut.op2.value = op2
 
-    await Timer(1, "ns")
+    await Timer(1, 'ns')
 
     expected = compute_expected(op1, op2, operation)
     actual = int(dut.ALU_out.value)

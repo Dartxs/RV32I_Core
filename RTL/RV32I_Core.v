@@ -1,5 +1,5 @@
 module RV32I_Core(
-    input clk, reset
+    input clk, rst_n
     );
     
     wire [31:0] PC; //current count
@@ -22,7 +22,7 @@ module RV32I_Core(
     
     Program_Counter program_counter(
         .clk(clk), 
-        .reset(reset),
+        .rst_n(rst_n),
         .PC_Sel(PC_Sel), 
         .op1(op1), 
         .imm(imm), 
@@ -57,7 +57,7 @@ module RV32I_Core(
     
     Register_File register_file(
         .clk(clk),
-        .reset(reset),
+        .rst_n(rst_n),
         .rs1(rs1), 
         .rs2(rs2),
         .rd(rd), 
@@ -107,7 +107,7 @@ module RV32I_Core(
     
     Data_Memory data_memory(
         .clk(clk), 
-        .reset(reset),
+        .rst_n(rst_n),
         .mem_write(mem_write), 
         .mem_read(mem_read),
         .funct3(funct3),

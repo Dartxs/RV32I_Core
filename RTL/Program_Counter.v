@@ -1,5 +1,5 @@
 module Program_Counter(
-    input clk, reset,
+    input clk, rst_n,
     input [1:0] PC_Sel, //for selecting next PC
     input [31:0] op1, //for jalr
     input signed [31:0] imm, //for jalr and branch/jal
@@ -26,8 +26,8 @@ module Program_Counter(
     end
    
     always @(posedge clk) begin
-        if(reset)
-            PC <= 32'b0; //reset PC to 0 if, reset on
+        if(!rst_n)
+            PC <= 32'b0; 
         else
             PC <= new_PC; 
     end
