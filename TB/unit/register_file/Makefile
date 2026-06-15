@@ -1,5 +1,5 @@
 TOPLEVEL_LANG = verilog
-SIM = icarus
+SIM = verilator
 
 VERILOG_SOURCES = ../../../RTL/Register_File.v
 TOPLEVEL = Register_File

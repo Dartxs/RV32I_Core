@@ -1,5 +1,5 @@
 TOPLEVEL_LANG = verilog
-SIM = icarus
+SIM = verilator
 
 VERILOG_SOURCES = ../../../RTL/ALU.v
 TOPLEVEL = ALU
