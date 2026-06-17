@@ -1,18 +1,13 @@
 import cocotb
 from cocotb.triggers import Timer, RisingEdge
-from cocotb.clock import Clock
 import random
+from TB.helpers import start_clock
 
 '''
 RV32I Register File cocotb testbench
 
 RTL module is reset at the start of each test to ensure no reads to undefined values
 '''
-
-#helper functions
-def start_clock(dut, period=10):
-    clock = Clock(dut.clk, period, 'ns')
-    cocotb.start_soon(clock.start())
 
 async def init_test(dut):
     dut.rst_n.value = 0

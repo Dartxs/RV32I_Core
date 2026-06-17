@@ -1,27 +1,16 @@
 import cocotb
 from cocotb.triggers import Timer
 import random
-from enum import IntEnum
+from rv32i_enums import ALU_Ops
+from helpers import signed_cast
 
-"""
+'''
 RV32I ALU cocotb testbench with directed and randomized test for each operator
 
 operations (ALU_op): add = 0, sub = 1, sll = 2, slt = 3, sltu = 4, xor = 5, srl = 6, sra = 7, or = 8, and = 9
 operand1 (ALU_op1_ctrl): 0 = op1, 1 = PC
 operand2 (ALU_op2_ctrl): 0 = op2, 1 = imm
-"""
-
-class ALU_Ops(IntEnum):
-    ADD = 0
-    SUB = 1
-    SLL = 2
-    SLT = 3
-    SLTU = 4
-    XOR = 5
-    SRL = 6
-    SRA = 7
-    OR = 8
-    AND = 9
+'''
 
 #helper functions
 def init_ctrls(dut):
@@ -29,12 +18,6 @@ def init_ctrls(dut):
     dut.ALU_op1_ctrl.value = 0
     dut.ALU_op2_ctrl.value = 0
     dut.PC.value = 0
-
-def signed_cast(val):
-    if(val & (1 << 31)): #check if MSB is 1(signed)
-        return (val - (1 << 32)) #force python to interpret value as negative if signed
-    else:
-        return val
     
 def compute_expected(op1, op2, operation):
 
