@@ -8,7 +8,7 @@ module ALU(
     wire [31:0] ALU_op1, ALU_op2;
     
     assign ALU_op1 = (ALU_op1_ctrl) ? PC : op1; //op1 ctrl selects if ALU op1 is PC or op1
-    assign ALU_op2 = (ALU_op2_ctrl) ? imm : op2; //op2_ctrl selects if ALU op2 is immediate or rop2
+    assign ALU_op2 = (ALU_op2_ctrl) ? imm : op2; //op2_ctrl selects if ALU op2 is immediate or op2
     
     localparam add_op = 0, sub_op = 1, sll_op = 2, slt_op = 3, sltu_op = 4, 
                xor_op = 5, srl_op = 6, sra_op = 7, or_op = 8, and_op = 9; 
