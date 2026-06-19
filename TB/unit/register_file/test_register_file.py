@@ -1,7 +1,7 @@
 import cocotb
 from cocotb.triggers import Timer, RisingEdge
 import random
-from TB.helpers import start_clock
+from helpers import start_clock
 
 '''
 RV32I Register File cocotb testbench
@@ -25,7 +25,7 @@ async def comp_read_rs1(dut, rs1, expected):
 
     actual = int(dut.op1.value)
     
-    assert ((actual == expected)), ( 
+    assert (actual == expected), ( 
         f"\nFAILED READ TEST\n"
         f" rs1 = 0x{rs1:02X}\n"
         f"expected op1 = 0x{expected:08X} | actual op1 = 0x{actual:08X}\n"
@@ -38,7 +38,7 @@ async def comp_read_rs2(dut, rs2, expected):
 
     actual = int(dut.op2.value)
     
-    assert ((actual == expected)), ( 
+    assert (actual == expected), ( 
         f"\nFAILED READ TEST\n"
         f" rs2 = 0x{rs2:02X}\n"
         f"expected op2 = 0x{expected:08X} | actual op2 = 0x{actual:08X}\n"

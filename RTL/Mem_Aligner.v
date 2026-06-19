@@ -4,9 +4,9 @@ module Mem_Aligner(
     output reg aligned, sign,
     output reg [3:0] byte_ena
     );
-    
+
     wire [1:0] even_address = {address[1], 1'b0}; //Use even address for halfword stores/loads
-    
+
     always @(*) begin
         aligned = 0; sign = 1;
         byte_ena = 4'b0000;
@@ -34,12 +34,12 @@ module Mem_Aligner(
                 aligned = (address == 2'b00 || address == 2'b10); 
                 sign = 0; //unsigned
                 if(aligned)
-                    byte_ena[even_address +: 2] = 2'b11; 
+                    byte_ena[even_address +: 2] = 2'b11;
             end
             default: begin //ensure no reads/writes are allowed for invalid funct3 input 
-                aligned = 0; 
-                byte_ena = 4'b0; 
-            end      
-        endcase   
-    end 
+                aligned = 0;
+                byte_ena = 4'b0;
+            end
+        endcase
+    end
 endmodule

@@ -57,7 +57,7 @@ async def check_control(dut, opcode, branch_taken, expected):
     check_output("mem_write", int(dut.mem_write.value), expected["mem_write"])
     check_output("reg_write", int(dut.reg_write.value), expected["reg_write"])
 
-    assert not errors, (
+    assert (not errors), (
         f"\n FAILED CONTROL UNIT TEST\n"
         f"opcode = 0b{opcode:07b} ({opcode.name}) | branch_taken = {branch_taken} ({bool(branch_taken)})\n"
         + "\n".join(errors)

@@ -51,3 +51,10 @@ class PC_Sel(IntEnum):
     DEFAULT = 0
     BR_JAL = 1
     JALR = 2
+
+class Funct3(IntEnum):
+    BYTE = 0b000
+    HALFWORD = 0b001
+    WORD = 0b010
+    BYTE_U = 0b100
+    HALFWORD_U = 0b101
