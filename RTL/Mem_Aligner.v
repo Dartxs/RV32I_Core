@@ -10,7 +10,7 @@ module Mem_Aligner(
     always @(*) begin
         aligned = 0; sign = 1;
         byte_ena = 4'b0000;
-        case(funct3) 
+        case(funct3)
             3'b000: begin
                 aligned = 1; //no need to check for alignment for single byte 
                 byte_ena[address] = 1'b1; 

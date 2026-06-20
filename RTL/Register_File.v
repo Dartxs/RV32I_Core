@@ -7,7 +7,7 @@ module Register_File(
     output reg [31:0] op1, op2 //data from source reg1 and source reg2
     );
     
-    reg [31:0] registers [31:0]; //32 x 32 bit registers, register x0 not really in use, but acts as a hardwire to 0
+    reg [31:0] registers [0:31]; //32 x 32 bit registers, register x0 not really in use, but acts as a hardwire to 0
     
     always @(*) begin
         //x1-x31 returns value stored x0 always returns 0

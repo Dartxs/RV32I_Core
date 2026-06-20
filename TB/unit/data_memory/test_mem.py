@@ -1,7 +1,7 @@
 import cocotb
 from cocotb.triggers import Timer, RisingEdge
 import random
-from helpers import start_clock, signed_cast
+from helpers import start_clock, sign_extend
 from rv32i_enums import Funct3
 
 '''
@@ -76,7 +76,7 @@ async def test_mem_halfword(dut):
         await mem_write(dut, addr, data, Funct3.HALFWORD)
 
     for addr, data in expected.items():
-        await comp_read(dut, addr, signed_cast(data), Funct3.HALFWORD)
+        await comp_read(dut, addr, sign_extend(data, 16), Funct3.HALFWORD)
         await comp_read(dut, addr, data, Funct3.HALFWORD_U) #Verify unsigned halfword loads
 
 @cocotb.test()
@@ -93,7 +93,7 @@ async def test_mem_byte(dut):
         await mem_write(dut, addr, data, Funct3.BYTE)
 
     for addr, data in expected.items():
-        await comp_read(dut, addr, signed_cast(data), Funct3.BYTE)
+        await comp_read(dut, addr, sign_extend(data, 8), Funct3.BYTE)
         await comp_read(dut, addr, data, Funct3.BYTE_U)
 
 @cocotb.test()

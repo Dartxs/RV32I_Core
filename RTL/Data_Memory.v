@@ -13,7 +13,7 @@ module Data_Memory(
     wire write_ena = (mem_write && aligned);
     wire read_ena = (mem_read && aligned);
 
-    reg [31:0] memory [2047:0]; //2048 words (8192 bytes)
+    reg [31:0] memory [0:2047]; //2048 words (8192 bytes)
 
     wire [10:0] word_address = address[12:2]; //address word aligned
     wire [31:0] write_mask = { {8{byte_ena[3]}}, {8{byte_ena[2]}}, {8{byte_ena[1]}}, {8{byte_ena[0]}} }; //word with bytes high based on byte_ena
@@ -39,7 +39,7 @@ module Data_Memory(
     always @(*) begin
         read_data = 32'b0;
 
-        if(read_ena) begin 
+        if(read_ena) begin
             case(byte_ena)
                 4'b1111: read_data = word; //load word
                 4'b1100: begin

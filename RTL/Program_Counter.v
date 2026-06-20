@@ -10,7 +10,7 @@ module Program_Counter(
     localparam PC_default = 0, PC_BR_JAL = 1, PC_JALR = 2;
 
     reg [31:0] new_PC;
-    wire [31:0] jalr_PC, br_jal_PC; 
+    wire [31:0] jalr_PC, br_jal_PC;
 
     assign default_PC = PC + 4;
     assign br_jal_PC = PC + imm;
@@ -27,9 +27,9 @@ module Program_Counter(
 
     always @(posedge clk) begin
         if(!rst_n)
-            PC <= 32'b0; 
+            PC <= 32'b0;
         else
-            PC <= new_PC; 
+            PC <= new_PC;
     end
 
 endmodule
