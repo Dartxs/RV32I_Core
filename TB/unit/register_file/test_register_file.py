@@ -11,6 +11,7 @@ RTL module is reset at the start of each test to ensure no reads to undefined va
 
 async def init_test(dut):
     dut.rst_n.value = 0
+    dut.dbug_addr.value = 0
 
     start_clock(dut)
     await RisingEdge(dut.clk)

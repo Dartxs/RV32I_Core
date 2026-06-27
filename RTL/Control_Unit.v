@@ -17,7 +17,7 @@ module Control_Unit(
         ALU_op1_ctrl = 0; ALU_op2_ctrl = 0; PC_Sel = PC_default; //default: use data from registers for ALU op1 and op2, PC = PC+4
         writeback_ctrl = WB_ALU; //default: reg write data from ALU
         case(opcode)
-            load_ins: begin 
+            load_ins: begin
                 mem_read = 1; //read from memory
                 reg_write = 1; //write to register file
                 ALU_op2_ctrl = 1; //use immediate for ALU op2 to calculate offset
@@ -26,7 +26,7 @@ module Control_Unit(
             store_ins: begin
                 mem_write = 1; //write to memory
                 ALU_op2_ctrl = 1; //use immediate for ALU op2 to calculate offset
-            end    
+            end
             branch_ins: begin
                 PC_Sel = (branch_taken) ? PC_BR_JAL : PC_default; //determine whether to jump based on branch bit
             end
@@ -37,24 +37,24 @@ module Control_Unit(
             end
             jal_ins: begin
                 reg_write = 1; //write to register file
-                PC_Sel = PC_BR_JAL; //use jal for next PC 
+                PC_Sel = PC_BR_JAL; //use jal for next PC
                 writeback_ctrl = WB_def_PC; //write PC to register file
-            end   
+            end
             opimm_ins: begin
                 reg_write = 1; //write to register file
                 ALU_op2_ctrl = 1; //use immediate for ALU op2
                 writeback_ctrl = WB_ALU; //write ALU results to register file
-            end    
+            end
             opR_ins: begin
                 reg_write = 1; //write to register file
                 writeback_ctrl = WB_ALU; //write ALU results to register file
-            end  
+            end
             auipc_ins: begin
                 reg_write = 1; //write to register file
                 ALU_op1_ctrl = 1; //use PC for ALU op1
                 ALU_op2_ctrl = 1; //use immediate for ALU op2
                 writeback_ctrl = WB_ALU; //write ALU results to register file
-            end    
+            end
             lui_ins: begin
                 reg_write = 1; //write to register file
                 writeback_ctrl = WB_imm; //write immediate value to register file

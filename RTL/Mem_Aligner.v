@@ -19,7 +19,7 @@ module Mem_Aligner(
                 aligned = (address == 2'b00 || address == 2'b10); //ensure read/write address is aligned for halfword
                 if(aligned)
                     byte_ena[even_address +: 2] = 2'b11; //enable byte read/write to start at 1st or 3rd byte of address
-            end 
+            end
             3'b010: begin
                 aligned = (address == 2'b00); //check read/write address is at byte 0
                 if(aligned)

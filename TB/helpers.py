@@ -1,5 +1,6 @@
 import cocotb
 from cocotb.clock import Clock
+from cocotb.triggers import Timer, RisingEdge
 
 def signed_cast(val):
 
@@ -11,6 +12,10 @@ def signed_cast(val):
 def start_clock(dut, period=10):
     clock = Clock(dut.clk, period, 'ns')
     cocotb.start_soon(clock.start())
+
+async def tick(dut):
+    await RisingEdge(dut.clk)
+    await Timer(1, 'ns')
 
 def sign_extend(val, n):
 

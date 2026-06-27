@@ -1,11 +1,13 @@
 module RV32I_Core(
-    input clk, rst_n
+    input clk, rst_n,
+    input [4:0] dbug_addr,
+    output [31:0] dbug_out
     );
 
     wire [31:0] PC; //current count
     wire [31:0] default_PC; //default next count (count+4)
-    wire [31:0] instruction, imm; 
-    wire [6:0] opcode, funct7; 
+    wire [31:0] instruction, imm;
+    wire [6:0] opcode, funct7;
     wire [2:0] funct3;
     wire [4:0] rs1, rs2; //source registers
     wire [4:0] rd; //destination register
@@ -21,38 +23,38 @@ module RV32I_Core(
     wire [31:0] mem_out; //output from memory
 
     Program_Counter program_counter(
-        .clk(clk), 
+        .clk(clk),
         .rst_n(rst_n),
-        .PC_Sel(PC_Sel), 
-        .op1(op1), 
-        .imm(imm), 
-        .PC(PC), 
+        .PC_Sel(PC_Sel),
+        .op1(op1),
+        .imm(imm),
+        .PC(PC),
         .default_PC(default_PC)
     );
 
-    Instruction_Memory instruction_memory( 
-        .PC(PC), 
+    Instruction_Memory instruction_memory(
+        .PC(PC),
         .instruction(instruction)
     );
 
    Instruction_Decoder instruction_decoder(
         .instruction(instruction),
-        .opcode(opcode), 
+        .opcode(opcode),
         .funct3(funct3),
         .funct7(funct7),
-        .rs1(rs1), 
-        .rs2(rs2), 
+        .rs1(rs1),
+        .rs2(rs2),
         .rd(rd),
-        .imm(imm) 
+        .imm(imm)
     );
 
     Writeback_MUX writeback_mux(
         .writeback_ctrl(writeback_ctrl),
-        .ALU_out(ALU_out), 
-        .mem_out(mem_out), 
-        .default_PC(default_PC), 
-        .imm(imm), 
-        .writeback_data(writeback_data) 
+        .ALU_out(ALU_out),
+        .mem_out(mem_out),
+        .default_PC(default_PC),
+        .imm(imm),
+        .writeback_data(writeback_data)
     );
 
     Register_File register_file(
@@ -61,10 +63,12 @@ module RV32I_Core(
         .rs1(rs1),
         .rs2(rs2),
         .rd(rd),
-        .reg_write(reg_write), 
-        .writeback_data(writeback_data), 
+        .dbug_addr(dbug_addr),
+        .reg_write(reg_write),
+        .writeback_data(writeback_data),
         .op1(op1),
-        .op2(op2)
+        .op2(op2),
+        .dbug_out(dbug_out)
     );
 
     Control_Unit control_unit(
@@ -113,7 +117,7 @@ module RV32I_Core(
         .funct3(funct3),
         .address(ALU_out), //ALU_out = address to read from memory
         .write_data(op2), //Data to write comes from data stored in rs2
-        .read_data(mem_out) //read data sent to writeback MUX 
+        .read_data(mem_out) //read data sent to writeback MUX
     );
 
 endmodule

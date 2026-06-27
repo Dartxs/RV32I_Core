@@ -71,15 +71,15 @@ module Data_Memory(
                         read_data = { {24{word[23]}}, word[23:16] }; //load byte2, sign extended
                     else
                         read_data = { 24'b0, word[23:16] }; //load byte2, zero extended
-                end        
+                end
                 4'b1000: begin
                     if(sign)
                         read_data = { {24{word[31]}}, word[31:24] }; //load byte3, sign extended
                     else
                         read_data = { 24'b0, word[31:24] }; //load byte3, zero extended
-                end   
-                default: read_data = 32'b0;    
-            endcase   
-        end      
-    end                  
+                end
+                default: read_data = 32'b0;
+            endcase
+        end
+    end
 endmodule
