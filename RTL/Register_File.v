@@ -19,9 +19,9 @@ module Register_File(
         op2 = (rs2 == 0) ? 32'b0 : registers[rs2];
     end
 
+    integer i;
     always @(posedge clk) begin
         if(!rst_n) begin
-            integer i;
             for(i = 0; i < 32; i = i+1)
                 registers[i] <= 32'b0;
         end

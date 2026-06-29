@@ -13,6 +13,7 @@ module Hexdisp_Mux(
 
 
     always @(*) begin
+        an = 8'b11111111;
         case(led_state)
             A: begin
                 hex_out = led0;
@@ -54,6 +55,10 @@ module Hexdisp_Mux(
                 next = A;
                 an = 8'b01111111;
             end
+            default: begin
+                hex_out = led0;
+                next = A;
+            end
         endcase
         case (hex_out)
             4'h0: sseg = 8'b11000000;
@@ -66,12 +71,12 @@ module Hexdisp_Mux(
             4'h7: sseg = 8'b11111000;
             4'h8: sseg = 8'b10000000;
             4'h9: sseg = 8'b10011000;
-            4'ha: sseg = 8'b10100000;
-            4'hb: sseg = 8'b10000111;
-            4'hc: sseg = 8'b10100111;
-            4'hd: sseg = 8'b10100001;
-            4'he: sseg = 8'b10000110;
-            4'hf: sseg = 8'b10001110;
+            4'ha: sseg = 8'b10001000; //A
+            4'hb: sseg = 8'b10000011; //b
+            4'hc: sseg = 8'b11000110; //C
+            4'hd: sseg = 8'b10100001; //d
+            4'he: sseg = 8'b10000110; //E
+            4'hf: sseg = 8'b10001110; //F
         endcase
     end
 

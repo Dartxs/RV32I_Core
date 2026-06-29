@@ -1,11 +1,11 @@
 module top(
     input clk, rstn_btn, next_btn, prev_btn,
     output [7:0] sseg,
-    output [7:0] an
+    output [7:0] an,
+    output [4:0] dbug_addr
 );
 
     wire next_tick, prev_tick, rst_n;
-    wire [4:0] dbug_addr;
     wire [31:0] dbug_out;
 
     reg [3:0] por = 4'b0; //power-on reset
@@ -14,7 +14,7 @@ module top(
         por <= {por[2:0], 1'b1};
     end
 
-    Debouncer rstn_debouncer(
+    Debouncer #(.CLK_FREQ(50000000)) rstn_debouncer(
         .clk(clk),
         .rst_n(por[3]),
         .btn(rstn_btn),
@@ -22,7 +22,7 @@ module top(
         .level(rst_n)
     );
 
-    Debouncer next_debouncer(
+    Debouncer #(.CLK_FREQ(50000000)) next_debouncer(
         .clk(clk),
         .rst_n(rst_n),
         .btn(next_btn),
@@ -30,7 +30,7 @@ module top(
         .level()
     );
 
-    Debouncer prev_debouncer(
+    Debouncer #(.CLK_FREQ(50000000)) prev_debouncer(
         .clk(clk),
         .rst_n(rst_n),
         .btn(prev_btn),

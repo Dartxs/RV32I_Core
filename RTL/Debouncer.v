@@ -45,7 +45,7 @@ module Debouncer#(
                 tick <= 1'b1;
 
             PS <= NS;
-            clk_count <= '0;
+            clk_count <= 0;
         end else
             clk_count <= clk_count + 1;
     end
