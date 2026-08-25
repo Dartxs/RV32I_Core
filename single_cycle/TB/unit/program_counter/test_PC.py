@@ -1,7 +1,7 @@
 import cocotb
 from cocotb.triggers import Timer, RisingEdge
-from helpers import start_clock, tick
-from rv32i_enums import PC_Sel
+from single_cycle.TB.helpers import start_clock, tick
+from single_cycle.TB.rv32i_enums import PC_Sel
 
 '''
 RV32I Program Counter cocotb testbench

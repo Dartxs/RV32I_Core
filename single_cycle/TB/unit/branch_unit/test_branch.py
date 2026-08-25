@@ -1,8 +1,8 @@
 import cocotb
 from cocotb.triggers import Timer
 import random
-from rv32i_enums import Branch_Ops
-from helpers import signed_cast
+from single_cycle.TB.rv32i_enums import Branch_Ops
+from single_cycle.TB.helpers import signed_cast
 
 '''
 RV32I Branch Unit cocotb testbench

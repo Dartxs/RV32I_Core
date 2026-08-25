@@ -1,8 +1,8 @@
 import cocotb
 from cocotb.triggers import Timer, RisingEdge
 import random
-from helpers import start_clock, sign_extend
-from rv32i_enums import Funct3
+from single_cycle.TB.helpers import start_clock, sign_extend
+from single_cycle.TB.rv32i_enums import Funct3
 
 '''
 RV32I Data Memory cocotb testbench
