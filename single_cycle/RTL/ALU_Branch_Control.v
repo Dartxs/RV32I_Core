@@ -5,18 +5,18 @@ module ALU_Branch_Control(
     output reg [2:0] branch_op
     );
 
-    localparam load_ins = 7'b00_000_11, store_ins = 7'b01_000_11, branch_ins = 7'b11_000_11, jalr_ins = 7'b11_001_11, 
+    localparam [6:0] load_ins = 7'b00_000_11, store_ins = 7'b01_000_11, branch_ins = 7'b11_000_11, jalr_ins = 7'b11_001_11, 
                jal_ins = 7'b11_011_11, opimm_ins = 7'b00_100_11, opR_ins = 7'b01_100_11, auipc_ins = 7'b00_101_11, 
                lui_ins = 7'b01_101_11;
 
-    localparam add_op = 0, sub_op = 1, sll_op = 2, slt_op = 3, sltu_op = 4,
+    localparam [3:0] add_op = 0, sub_op = 1, sll_op = 2, slt_op = 3, sltu_op = 4,
                xor_op = 5, srl_op = 6, sra_op = 7, or_op = 8, and_op = 9;
 
-    localparam beq = 0, bne = 1,  blt = 2, bge = 3, bltu = 4, bgeu = 5;
+    localparam [2:0] beq = 0, bne = 1,  blt = 2, bge = 3, bltu = 4, bgeu = 5, nop = 6;
 
     always @(*) begin
         ALU_op = add_op;
-        branch_op = beq;
+        branch_op = nop;
 
         if(opcode == opR_ins || opcode == opimm_ins) begin
             case(funct3)
@@ -40,7 +40,7 @@ module ALU_Branch_Control(
                 3'b101: branch_op = bge;
                 3'b110: branch_op = bltu;
                 3'b111: branch_op = bgeu;
-                default: branch_op = beq;
+                default: branch_op = nop;
             endcase
         end
     end

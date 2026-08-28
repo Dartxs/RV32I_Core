@@ -1,8 +1,8 @@
 import cocotb
 from cocotb.triggers import Timer
 import random
-from single_cycle.TB.rv32i_enums import ALU_Ops
-from single_cycle.TB.helpers import signed_cast
+from rv32i_enums import ALU_Ops
+from helpers import signed_cast
 
 '''
 RV32I ALU cocotb testbench with directed and randomized test for each operator

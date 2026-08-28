@@ -4,7 +4,7 @@ module Branch_Unit(
     output reg branch_taken
     );
 
-    localparam beq = 0, bne = 1, blt = 2, bge = 3, bltu = 4, bgeu = 5; //match ALU_Branch_control
+    localparam [2:0] beq = 0, bne = 1, blt = 2, bge = 3, bltu = 4, bgeu = 5, nop = 6; //match ALU_Branch_control
 
     always @(*) begin
         case(branch_op)

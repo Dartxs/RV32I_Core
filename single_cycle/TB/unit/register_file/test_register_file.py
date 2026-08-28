@@ -1,7 +1,7 @@
 import cocotb
 from cocotb.triggers import Timer, RisingEdge
 import random
-from single_cycle.TB.helpers import start_clock
+from helpers import start_clock
 
 '''
 RV32I Register File cocotb testbench

@@ -2,12 +2,12 @@ module Program_Counter(
     input clk, rst_n,
     input [1:0] PC_Sel, //for selecting next PC
     input [31:0] op1, //for jalr
-    input signed [31:0] imm, //for jalr and branch/jal
+    input [31:0] imm, //for jalr and branch/jal
     output reg [31:0] PC, //
     output [31:0] default_PC //For return address after a jump
     );
 
-    localparam PC_default = 0, PC_BR_JAL = 1, PC_JALR = 2;
+    localparam [1:0] PC_default = 0, PC_BR_JAL = 1, PC_JALR = 2;
 
     reg [31:0] new_PC;
     wire [31:0] jalr_PC, br_jal_PC;

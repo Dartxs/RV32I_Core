@@ -1,6 +1,6 @@
 import cocotb
 from cocotb.triggers import Timer
-from single_cycle.TB.rv32i_enums import Opcodes, WB_ctrl, PC_Sel
+from rv32i_enums import Opcodes, WB_ctrl, PC_Sel
 
 '''
 RV32I Control Unit cocotb testbench 

@@ -1,7 +1,7 @@
 import cocotb
 from cocotb.triggers import RisingEdge, Timer, NullTrigger
 from cocotb.clock import Clock
-from single_cycle.TB.helpers import start_clock, tick
+from helpers import start_clock, tick
 
 
 '''

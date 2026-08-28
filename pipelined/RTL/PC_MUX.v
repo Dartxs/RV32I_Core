@@ -1,7 +1,7 @@
 module PC_MUX(
     input jal, jalr, branch_taken,
-    input [31:0] op1, imm, PC, PCPlus4, //PC should be passed from execute stage for jump or branch
-    output [31:0] next_PC
+    input [31:0] op1, imm, PC, PCp4, //PC should be passed from execute stage for jump or branch
+    output reg [31:0] next_PC
     );
 
     wire [31:0] PC_BR_JAL, PC_JALR;

@@ -6,7 +6,7 @@ module Hexdisp_Mux(
     output reg [7:0] an
     );
 
-    localparam A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7;
+    localparam [2:0] A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7;
     reg [16:0] clkdiv;
     reg [3:0] hex_out;
     reg [3:0] led_state, next;

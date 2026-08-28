@@ -4,11 +4,11 @@ module Control_Unit(
     output reg ALUSrcA_Sel, ALUSrcB_Sel, mem_write, mem_read, reg_write, jal, jalr
     );
 
-    localparam load_ins = 7'b00_000_11, store_ins = 7'b01_000_11, branch_ins = 7'b11_000_11, jalr_ins = 7'b11_001_11, 
+    localparam [6:0] load_ins = 7'b00_000_11, store_ins = 7'b01_000_11, branch_ins = 7'b11_000_11, jalr_ins = 7'b11_001_11, 
                jal_ins = 7'b11_011_11, opimm_ins = 7'b00_100_11, opR_ins = 7'b01_100_11, auipc_ins = 7'b00_101_11, 
                lui_ins = 7'b01_101_11;
 
-   localparam WB_ALU = 0, WB_mem = 1, WB_def_PC = 2, WB_imm = 3;
+   localparam [1:0] WB_ALU = 0, WB_mem = 1, WB_def_PC = 2, WB_imm = 3;
 
     always @(*) begin
         mem_write = 0; mem_read = 0; reg_write = 0; //default: mem write, mem read, reg write off

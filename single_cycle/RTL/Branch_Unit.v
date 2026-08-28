@@ -4,7 +4,7 @@ module Branch_Unit(
     output reg branch_taken
     );
 
-    localparam beq = 0, bne = 1, blt = 2, bge = 3, bltu = 4, bgeu = 5; //match ALU_Branch_control
+    localparam [2:0] beq = 0, bne = 1, blt = 2, bge = 3, bltu = 4, bgeu = 5, nop = 6; //match ALU_Branch_control
 
     always @(*) begin
         case(branch_op)
@@ -14,7 +14,8 @@ module Branch_Unit(
             bge: branch_taken = ($signed(op1) >= $signed(op2));
             bltu: branch_taken = (op1 < op2);
             bgeu: branch_taken = (op1 >= op2);
-            default: branch_taken = beq;
+            nop: branch_taken = 1'b0;
+            default: branch_taken = 1'b0;
         endcase
     end
      
