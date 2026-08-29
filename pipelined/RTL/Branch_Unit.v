@@ -1,6 +1,6 @@
 module Branch_Unit(
-    input [31:0] op1, op2,
     input [2:0] branch_op, //input to determine which operation used to determine branch
+    input [31:0] op1, op2,
     output reg branch_taken
     );
 

@@ -1,6 +1,6 @@
 module Writeback_MUX(
     input [1:0] writeback_ctrl,
-    input [31:0] ALU_out, mem_out, default_PC, imm, //note PC should be current PC+4
+    input [31:0] ALU_out, mem_out, PCp4, imm, //note PC should be current PC+4
     output reg [31:0] writeback_data //data used to write to register file
     );
 

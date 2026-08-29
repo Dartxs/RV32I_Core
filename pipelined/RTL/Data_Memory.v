@@ -2,7 +2,7 @@ module Data_Memory(
     input clk, rst_n, mem_write, mem_read,
     input [2:0] funct3,
     input [31:0] address, write_data,
-    output reg [31:0] read_data
+    output reg [31:0] mem_out
     );
 
     wire [3:0] byte_ena;
@@ -37,48 +37,48 @@ module Data_Memory(
     end
 
     always @(*) begin
-        read_data = 32'b0;
+        mem_out = 32'b0;
 
         if(read_ena) begin
             case(byte_ena)
-                4'b1111: read_data = word; //load word
+                4'b1111: mem_out = word; //load word
                 4'b1100: begin
                     if(sign)
-                        read_data = { {16{word[31]}}, word[31:16] }; //load upper halfword, sign extended
+                        mem_out = { {16{word[31]}}, word[31:16] }; //load upper halfword, sign extended
                     else
-                        read_data = { 16'b0, word[31:16] }; //load upper halfworld, zero extended
+                        mem_out = { 16'b0, word[31:16] }; //load upper halfworld, zero extended
                 end
                 4'b0011: begin
                     if(sign)
-                        read_data = { {16{word[15]}}, word[15:0] }; //load lower halfword, sign extended
+                        mem_out = { {16{word[15]}}, word[15:0] }; //load lower halfword, sign extended
                     else
-                        read_data = { 16'b0, word[15:0] } ; //load lower halfword, zero extended
+                        mem_out = { 16'b0, word[15:0] } ; //load lower halfword, zero extended
                 end
                 4'b0001: begin
                     if(sign)
-                        read_data = { {24{word[7]}}, word[7:0] }; //load byte0, sign extended
+                        mem_out = { {24{word[7]}}, word[7:0] }; //load byte0, sign extended
                     else
-                        read_data = { 24'b0, word[7:0] }; //load byte0, zero extended
+                        mem_out = { 24'b0, word[7:0] }; //load byte0, zero extended
                 end
                 4'b0010: begin
                     if(sign)
-                        read_data = { {24{word[15]}}, word[15:8] }; //load byte1, sign extended
+                        mem_out = { {24{word[15]}}, word[15:8] }; //load byte1, sign extended
                     else
-                        read_data = { 24'b0, word[15:8] }; //load byte1, zero extended
+                        mem_out = { 24'b0, word[15:8] }; //load byte1, zero extended
                 end
                 4'b0100: begin
                     if(sign)
-                        read_data = { {24{word[23]}}, word[23:16] }; //load byte2, sign extended
+                        mem_out = { {24{word[23]}}, word[23:16] }; //load byte2, sign extended
                     else
-                        read_data = { 24'b0, word[23:16] }; //load byte2, zero extended
+                        mem_out = { 24'b0, word[23:16] }; //load byte2, zero extended
                 end
                 4'b1000: begin
                     if(sign)
-                        read_data = { {24{word[31]}}, word[31:24] }; //load byte3, sign extended
+                        mem_out = { {24{word[31]}}, word[31:24] }; //load byte3, sign extended
                     else
-                        read_data = { 24'b0, word[31:24] }; //load byte3, zero extended
+                        mem_out = { 24'b0, word[31:24] }; //load byte3, zero extended
                 end
-                default: read_data = 32'b0;
+                default: mem_out = 32'b0;
             endcase
         end
     end

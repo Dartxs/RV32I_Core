@@ -1,9 +1,8 @@
 module Register_File(
-    input clk, rst_n,
+    input clk, rst_n, reg_write,
     input [4:0] rs1, rs2, //address for source reg1 and source reg2
     input [4:0] rd, //address for destination reg
     input [4:0] dbug_addr,
-    input reg_write, //bit for enabling writes to memory
     input [31:0] writeback_data, //data to write 
     output reg [31:0] op1, op2, //data from source reg1 and source reg2
     output [31:0] dbug_out

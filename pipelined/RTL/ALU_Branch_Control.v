@@ -1,8 +1,8 @@
 module ALU_Branch_Control(
-    input [6:0] opcode, funct7,
     input [2:0] funct3,
-    output reg [3:0] ALU_op,
-    output reg [2:0] branch_op
+    input [6:0] opcode, funct7,
+    output reg [2:0] branch_op,
+    output reg [3:0] ALU_op
     );
 
     localparam [6:0] load_ins = 7'b00_000_11, store_ins = 7'b01_000_11, branch_ins = 7'b11_000_11, jalr_ins = 7'b11_001_11, 

@@ -1,6 +1,6 @@
 module Mem_Aligner(
-    input [2:0] funct3,
     input [1:0] address,
+    input [2:0] funct3,
     output reg aligned, sign,
     output reg [3:0] byte_ena
     );

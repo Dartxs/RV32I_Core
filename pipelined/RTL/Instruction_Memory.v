@@ -1,6 +1,6 @@
 module Instruction_Memory(
     input [31:0] PC, //uses  PC to determine address location to fetch memory
-    output reg [31:0] instruction
+    output reg [31:0] instr
     );
 
     reg [7:0] rom [0:4095]; //byte addressed read-only memory (RV32i standard), 4096/4 = 1024 instr
