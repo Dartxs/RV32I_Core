@@ -9,9 +9,9 @@ module PC_Reg(
         if(!rst_n)
             PC <= 32'b0;
         else
-            PC <= new_PC;
+            PC <= next_PC;
     end
 
-    assign PCPlus4 = PC + 4;
+    assign PCp4 = PC + 4;
 
 endmodule

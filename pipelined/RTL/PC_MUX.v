@@ -13,9 +13,9 @@ module PC_MUX(
         if(jal || branch_taken)
             next_PC = PC_BR_JAL;
         else if(jalr)
-            next_PC = {PC_JALR, 1'b0};
+            next_PC = {PC_JALR[31:1], 1'b0};
         else
-            next_PC = PCPlus4;
+            next_PC = PCp4;
     end
 
 endmodule

@@ -1,7 +1,7 @@
 module Control_Unit(
     input [6:0] opcode,
     output reg [1:0] writeback_ctrl,
-    output reg ALUSrcA_Sel, ALUSrcB_Sel, mem_write, mem_read, reg_write, jal, jalr
+    output reg ALUSrcA_Sel, ALUSrcB_Sel, mem_write, mem_read, reg_write, jal, jalr, check_branch
     );
 
     localparam [6:0] load_ins = 7'b00_000_11, store_ins = 7'b01_000_11, branch_ins = 7'b11_000_11, jalr_ins = 7'b11_001_11, 
@@ -15,6 +15,7 @@ module Control_Unit(
         ALUSrcA_Sel = 0; ALUSrcB_Sel = 0; //default: use data from registers for ALU inputs
         jal = 0; jalr = 0; //default: no jumps
         writeback_ctrl = WB_ALU; //default: reg write data from ALU
+        check_branch = 1'b0;
         case(opcode)
             load_ins: begin
                 mem_read = 1; //read from memory
@@ -27,7 +28,7 @@ module Control_Unit(
                 ALUSrcB_Sel = 1; //use immediate for ALU op2 to calculate offset
             end
             branch_ins: begin
-                ; //logic handled elsewhere
+                check_branch = 1'b1; 
             end
             jalr_ins: begin
                 reg_write = 1; //write to register file

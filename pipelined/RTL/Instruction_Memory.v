@@ -10,10 +10,10 @@ module Instruction_Memory(
     end
 
     always @(*) begin
-        instruction = {rom[{PC[11:2], 2'b11}], //stored in little endian
-                       rom[{PC[11:2], 2'b10}],
-                       rom[{PC[11:2], 2'b01}],
-                       rom[{PC[11:2], 2'b00}]};
+        instr = {rom[{PC[11:2], 2'b11}], //stored in little endian
+                rom[{PC[11:2], 2'b10}],
+                rom[{PC[11:2], 2'b01}],
+                rom[{PC[11:2], 2'b00}]};
     end
 
 endmodule

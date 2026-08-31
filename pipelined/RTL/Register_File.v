@@ -13,9 +13,21 @@ module Register_File(
     assign dbug_out = registers[dbug_addr];
 
     always @(*) begin
-        //x1-x31 returns value stored x0 always returns 0
-        op1 = (rs1 == 0) ? 32'b0 : registers[rs1];
-        op2 = (rs2 == 0) ? 32'b0 : registers[rs2];
+        //x1-x31 returns value stored, x0 always returns 0
+        if(rs1 == 0)
+            op1 = 32'b0;
+        else if((rs1 == rd) && reg_write)
+            op1 = writeback_data;
+        else 
+            op1 = registers[rs1];
+
+        if(rs2 == 0)
+            op2 = 32'b0;
+        else if((rs2 == rd) && reg_write)
+            op2 = writeback_data;
+        else 
+            op2 = registers[rs2];
+        
     end
 
     integer i;
@@ -25,7 +37,7 @@ module Register_File(
                 registers[i] <= 32'b0;
         end
         else if(reg_write && (rd != 0))
-            registers[rd] <= writeback_data; //write only is reg write is on, writes to x0 ignored
+            registers[rd] <= writeback_data; //write only when reg write is on, writes to x0 ignored
     end
 
 endmodule

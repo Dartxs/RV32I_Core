@@ -6,8 +6,14 @@ module RV32I_Core(
 
     wire [31:0] PC, PCp4, next_PC;
 
+    wire [31:0] instr;
+
     wire flushFD, flushDE;
     wire stallFD, stallDE;
+    assign flushFD = 1'b0;
+    assign flushDE = 1'b0;
+    assign stallFD = 1'b0;
+    assign stallDE = 1'b0;
 
     wire [31:0] instrD, PCD, PCp4D;
 
@@ -17,14 +23,14 @@ module RV32I_Core(
     wire [31:0] imm;
 
     wire [1:0] writeback_ctrl;
-    wire ALUSrcA_Sel, ALUSrcB_Sel, mem_write, mem_read, reg_write, jal, jalr;
+    wire ALUSrcA_Sel, ALUSrcB_Sel, mem_write, mem_read, reg_write, jal, jalr, check_branch;
 
     wire [31:0] op1, op2;
 
     wire [2:0] branch_op;
     wire [3:0] ALU_op;
 
-    wire ALUSrcA_SelE, ALUSrcB_SelE, mem_writeE, mem_readE, reg_writeE, jalE, jalrE;
+    wire ALUSrcA_SelE, ALUSrcB_SelE, mem_writeE, mem_readE, reg_writeE, jalE, jalrE, check_branchE;
     wire [1:0] writeback_ctrlE;
     wire [2:0] branch_opE, funct3E;
     wire [3:0] ALU_opE;
@@ -39,17 +45,18 @@ module RV32I_Core(
     wire [1:0] writeback_ctrlM;
     wire [2:0] funct3M;
     wire [4:0] rdM;
-    wire [31:0] ALU_outM, PCp4M, op2Mv;
+    wire [31:0] ALU_outM, PCp4M, op2M, immM;
 
-    wire [31:0] read_data;
+    wire [31:0] mem_out;
 
+    wire reg_writeW;
     wire [1:0] writeback_ctrlW;
     wire [4:0] rdW;
-    wire [31:0] ALU_outw, PCp4W, read_dataW;
+    wire [31:0] ALU_outW, PCp4W, mem_outW, immW;
 
     wire [31:0] writeback_data;
 
-    PC_MUX pc_mux( //ADJUST INPUTS TO USE PIPELINE REGISTER OUTPUTS 
+    PC_MUX pc_mux(  
         .jal(jalE),
         .jalr(jalrE),
         .branch_taken(branch_taken), //branch unit output (execute stage)
@@ -65,13 +72,14 @@ module RV32I_Core(
         .rst_n(rst_n),
         .next_PC(next_PC), 
         .PC(PC),    //output 
-        .PCp4(PCp4),    //output
+        .PCp4(PCp4)    //output
     );
 
     Instruction_Memory instruction_memory(
         .PC(PC),
         .instr(instr)   //output
     );
+
 
     IF_ID if_id(
         .clk(clk),
@@ -106,14 +114,15 @@ module RV32I_Core(
         .mem_read(mem_read),    //output
         .reg_write(reg_write),  //output
         .jal(jal),  //output
-        .jalr(jalr) //output
-    );comes from 
+        .jalr(jalr), //output
+        .check_branch(check_branch) //output
+    );
 
-    Register_File register_file( //ADJUST INPUTS TO USE FROM WB STAGE
+    Register_File register_file( 
         .clk(clk),
         .rst_n(rst_n),
-        .reg_write(reg_writeW)
-        .rs1(rs1),comes from 
+        .reg_write(reg_writeW),
+        .rs1(rs1),
         .rs2(rs2),
         .rd(rdW),
         .dbug_addr(dbug_addr),
@@ -124,7 +133,7 @@ module RV32I_Core(
     );
 
     ALU_Branch_Control alu_branch_control(
-        .func3(funct3), 
+        .funct3(funct3), 
         .opcode(opcode),
         .funct7(funct7),
         .branch_op(branch_op), //output 
@@ -143,8 +152,10 @@ module RV32I_Core(
         .reg_writeD(reg_write),
         .jalD(jal),
         .jalrD(jalr),
+        .check_branchD(check_branch),
         .writeback_ctrlD(writeback_ctrl),
         .branch_opD(branch_op),
+        .funct3D(funct3),
         .ALU_opD(ALU_op),
         .rdD(rd),
         .PCD(PCD),
@@ -159,8 +170,10 @@ module RV32I_Core(
         .reg_writeE(reg_writeE),    //output
         .jalE(jalE),    //output
         .jalrE(jalrE),  //output
+        .check_branchE(check_branchE), //output
         .writeback_ctrlE(writeback_ctrlE),  //output
         .branch_opE(branch_opE),    //output
+        .funct3E(funct3E),  //output
         .ALU_opE(ALU_opE),  //output
         .rdE(rdE),  //output
         .PCE(PCE),  //output
@@ -182,6 +195,7 @@ module RV32I_Core(
     );
 
     Branch_Unit branch_unit(
+        .check_branch(check_branchE),
         .branch_op(branch_opE),
         .op1(op1E),
         .op2(op2E),
@@ -195,10 +209,12 @@ module RV32I_Core(
         .mem_readE(mem_readE),
         .reg_writeE(reg_writeE),
         .writeback_ctrlE(writeback_ctrlE),
+        .funct3E(funct3E),
         .rdE(rdE),
         .ALU_outE(ALU_out),
         .PCp4E(PCp4E),
         .op2E(op2E),
+        .immE(immE), 
         .mem_writeM(mem_writeM),    //output
         .mem_readM(mem_readM),  //output
         .reg_writeM(reg_writeM),    //output
@@ -207,7 +223,8 @@ module RV32I_Core(
         .rdM(rdM),  //output
         .ALU_outM(ALU_outM),    //output
         .PCp4M(PCp4M),  //output
-        .op2M(op2M) //output
+        .op2M(op2M), //output
+        .immM(immM) //output
     );
 
     Data_Memory data_memory(
@@ -229,13 +246,15 @@ module RV32I_Core(
         .rdM(rdM),
         .ALU_outM(ALU_outM),
         .PCp4M(PCp4M),
-        .mem_outM(mem_outM),
+        .mem_outM(mem_out),
+        .immM(immM),
         .reg_writeW(reg_writeW),    //output
         .writeback_ctrlW(writeback_ctrlW),  //output
         .rdW(rdW),  //output
-        .ALUoutW(ALUoutW),  //output
+        .ALU_outW(ALU_outW),  //output
         .PCp4W(PCp4W),  //output
-        .mem_outW(mem_outW) //output
+        .mem_outW(mem_outW), //output
+        .immW(immW) //output
     );
 
     Writeback_MUX writeback_mux(
@@ -243,6 +262,7 @@ module RV32I_Core(
         .ALU_out(ALU_outW),
         .mem_out(mem_outW),
         .PCp4(PCp4W),
+        .imm(immW),
         .writeback_data(writeback_data) //output
     );
 

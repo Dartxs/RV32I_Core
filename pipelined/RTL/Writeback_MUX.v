@@ -10,7 +10,7 @@ module Writeback_MUX(
         case(writeback_ctrl)
             WB_ALU: writeback_data = ALU_out;
             WB_mem: writeback_data = mem_out;
-            WB_def_PC: writeback_data = default_PC;
+            WB_def_PC: writeback_data = PCp4;
             WB_imm: writeback_data = imm;
             default: writeback_data = 32'b0;
         endcase
