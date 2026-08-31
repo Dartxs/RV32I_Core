@@ -58,3 +58,8 @@ class Funct3(IntEnum):
     WORD = 0b010
     BYTE_U = 0b100
     HALFWORD_U = 0b101
+
+class Forward_Sel(IntEnum):
+    NO_FORWARD = 0b00
+    FORWARD_MEM = 0b01
+    FORWARD_WB = 0b10
