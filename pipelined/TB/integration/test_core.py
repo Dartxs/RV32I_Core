@@ -33,8 +33,8 @@ EXPECTED_REGS = {
     21: 0x00000005,
     22: 0xFFFFFFFF,
     23: 0xDEADBEEF,
-    24: 0x00001080,
-    25: 0x00000088,
+    24: 0x00001060,
+    25: 0x00000068,
     26: 0x00000004,
     27: 0xDEADBEEF,
     28: 0xFFFFBEEF,
@@ -49,8 +49,8 @@ EXPECTED_MEM = {
     2: 0xBEEFEFEF
 }
 
-DONE_PC = 0x1C4  # PC should stay at this count at the end with no branch/jal errors
-FAIL_PC = 0x1D0  # PC stays at this count if there are branch/jal errors
+DONE_PC = 0x194  # PC should stay at this count at the end with no branch/jal errors
+FAIL_PC = 0x19C  # PC stays at this count if there are branch/jal errors
 TIMEOUT = 1000  # cycles before timeout
 
 async def init_test(dut):

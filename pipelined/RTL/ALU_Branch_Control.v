@@ -10,7 +10,7 @@ module ALU_Branch_Control(
                lui_ins = 7'b01_101_11;
 
     localparam [3:0] add_op = 0, sub_op = 1, sll_op = 2, slt_op = 3, sltu_op = 4,
-               xor_op = 5, srl_op = 6, sra_op = 7, or_op = 8, and_op = 9;
+               xor_op = 5, srl_op = 6, sra_op = 7, or_op = 8, and_op = 9, lui_op = 10;
 
     localparam [2:0] beq = 0, bne = 1,  blt = 2, bge = 3, bltu = 4, bgeu = 5, nop = 6;
 
@@ -30,7 +30,10 @@ module ALU_Branch_Control(
                 3'b111: ALU_op = and_op;
                 default: ALU_op = add_op;
             endcase
-        end
+        end 
+
+        if(opcode == lui_ins)
+            ALU_op = lui_op;
 
         if(opcode == branch_ins) begin
             case(funct3)
@@ -43,5 +46,6 @@ module ALU_Branch_Control(
                 default: branch_op = nop;
             endcase
         end
+
     end
 endmodule

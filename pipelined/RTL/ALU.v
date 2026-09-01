@@ -11,7 +11,7 @@ module ALU(
     assign ALU_op2 = (ALUSrcB_Sel) ? imm : op2; //op2_ctrl selects if ALU op2 is immediate or op2
 
     localparam [3:0] add_op = 0, sub_op = 1, sll_op = 2, slt_op = 3, sltu_op = 4,
-               xor_op = 5, srl_op = 6, sra_op = 7, or_op = 8, and_op = 9;
+               xor_op = 5, srl_op = 6, sra_op = 7, or_op = 8, and_op = 9, lui_op = 10;
 
     always @(*) begin
         case(ALU_op)
@@ -25,6 +25,7 @@ module ALU(
             sra_op: ALU_out = $signed(ALU_op1) >>> ALU_op2[4:0];
             or_op: ALU_out = ALU_op1 | ALU_op2;
             and_op: ALU_out = ALU_op1 & ALU_op2;
+            lui_op: ALU_out = imm;
             default: ALU_out = 32'b0;
         endcase
     end

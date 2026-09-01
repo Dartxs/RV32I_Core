@@ -4,13 +4,13 @@ module ID_EX(
     input [1:0] writeback_ctrlD,
     input [2:0] branch_opD, funct3D,
     input [3:0] ALU_opD,
-    input [4:0] rdD,
+    input [4:0] rdD, rs1D, rs2D,
     input [31:0] PCD, PCp4D, immD, op1D, op2D,
     output reg ALUSrcA_SelE, ALUSrcB_SelE, mem_writeE, mem_readE, reg_writeE, jalE, jalrE, check_branchE,
     output reg [1:0] writeback_ctrlE,
     output reg [2:0] branch_opE, funct3E,
     output reg [3:0] ALU_opE,
-    output reg [4:0] rdE,
+    output reg [4:0] rdE, rs1E, rs2E,
     output reg [31:0] PCE, PCp4E, immE, op1E, op2E
 );
 
@@ -20,7 +20,7 @@ module ID_EX(
             writeback_ctrlE <= 2'b0;
             {branch_opE, funct3E} <= 6'b0;
             ALU_opE <= 4'b0;
-            rdE <= 5'b0;
+            {rdE, rs1E, rs2E} <= 15'b0;
             {PCE, PCp4E, immE, op1E, op2E} <= 160'b0;
         end else if(!stall) begin
             {ALUSrcA_SelE, ALUSrcB_SelE, mem_writeE} <= {ALUSrcA_SelD, ALUSrcB_SelD, mem_writeD};
@@ -28,7 +28,7 @@ module ID_EX(
             writeback_ctrlE <= writeback_ctrlD;
             {branch_opE, funct3E} <= {branch_opD, funct3D};
             ALU_opE <= ALU_opD;
-            rdE <= rdD;
+            {rdE, rs1E, rs2E} <= {rdD, rs1D, rs2D};
             {PCE, PCp4E, immE, op1E, op2E} <= {PCD, PCp4D, immD, op1D, op2D};
         end
     end

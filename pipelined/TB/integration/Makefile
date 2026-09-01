@@ -18,7 +18,9 @@ VERILOG_SOURCES = ../../RTL/RV32I_Core.v \
                   ../../RTL/IF_ID.v \
                   ../../RTL/ID_EX.v \
                   ../../RTL/EX_MEM.v \
-                  ../../RTL/MEM_WB.v 
+                  ../../RTL/MEM_WB.v \
+                  ../../RTL/Forwarding_MUX.v \
+                  ../../RTL/Hazard_Unit.v
 
 
 TOPLEVEL = RV32I_Core

@@ -27,7 +27,7 @@
 
 ## Verification
 
-All critial modules were verified using [cocotb](https://www.cocotb.org/) with Verilator as the simulator.
+All critical modules were verified using [cocotb](https://www.cocotb.org/) with Verilator as the simulator.
 
 ## Synthesis
 

@@ -8,7 +8,7 @@ module Control_Unit(
                jal_ins = 7'b11_011_11, opimm_ins = 7'b00_100_11, opR_ins = 7'b01_100_11, auipc_ins = 7'b00_101_11, 
                lui_ins = 7'b01_101_11;
 
-   localparam [1:0] WB_ALU = 0, WB_mem = 1, WB_def_PC = 2, WB_imm = 3;
+   localparam [1:0] WB_ALU = 0, WB_mem = 1, WB_def_PC = 2;
 
     always @(*) begin
         mem_write = 0; mem_read = 0; reg_write = 0; //default: mem write, mem read, reg write off
@@ -57,7 +57,7 @@ module Control_Unit(
             end
             lui_ins: begin
                 reg_write = 1; //write to register file
-                writeback_ctrl = WB_imm; //write immediate value to register file
+                writeback_ctrl = WB_ALU; 
             end
             default: ;
         endcase
