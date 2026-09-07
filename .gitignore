@@ -8,9 +8,9 @@ __pycache__/
 #Build artifacts
 sim_build/
 *.xml
-*.elf
-*.mem
+**.elf
+**.mem
 self.txt
-*.vcd
+**.vcd
 
-*.fst
+**.fst

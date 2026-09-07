@@ -1,17 +1,7 @@
-## Architecture
+# RV32I Core
+ 
+A progression of RV32I processor implementations in Verilog, starting from a single-cycle design and advancing to a fully pipelined implementation with hazard handling. Both designs are verified with cocotb testbenches and synthesized on a Nexys A7 FPGA.
 
-- **Program Counter** — selects next PC from sequential, branch/JAL, or JALR sources
-- **Instruction Memory** — 4KB byte-addressed ROM loaded from a `.mem` file
-- **Instruction Decoder** — extracts opcode, funct3, funct7, rs1, rs2, rd, and immediate
-- **Immediate Generator** — sign-extends immediates for I, S, B, U, and J-type instructions
-- **Register File** — 32 x 32-bit registers with two read ports and one write port, x0 hardwired to 0
-- **Control Unit** — generates control signals from opcode and branch_taken
-- **ALU Branch Control** — maps funct3/funct7/opcode to ALU operation and branch condition
-- **ALU** — supports ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
-- **Branch Unit** — evaluates BEQ, BNE, BLT, BGE, BLTU, BGEU conditions
-- **Data Memory** — 8KB byte-addressed RAM with byte/halfword/word read and write support
-- **Memory Aligner** — decodes funct3 and address offset into byte enables, alignment check, and sign flag
-- **Writeback MUX** — selects writeback data from ALU result, memory, PC+4, or immediate
 
 ### Supported Instructions
 
@@ -25,28 +15,44 @@
 | J | JAL, JALR |
 | U | LUI, AUIPC |
 
-## Verification
-
-All critical modules were verified using [cocotb](https://www.cocotb.org/) with Verilator as the simulator.
-
-## Synthesis
-
-Synthesized and implemented in Vivado 2025.2 targeting the **Nexys A7 (XC7A100T-CSG324)**. 
-
-| Metric | Value |
+## Implementations
+ 
+### [Single-Cycle](./single_cycle/README.md)
+A complete single-cycle RV32I processor where every instruction executes in one clock cycle. Verified with module-level unit tests and a full integration test covering 37 integer instructions. Synthesized at 50MHz on the Nexys A7.
+ 
+### [Pipelined](./pipelined/README.md)
+A 5-stage pipelined extension of the single-cycle design with full hazard handling — RAW data forwarding, load-use stall detection, and predict not-taken branch prediction with pipeline flush on taken branches and unconditional jumps. Synthesized at 100MHz on the Nexys A7, achieving a 2x clock frequency improvement over the single-cycle design.
+ 
+## Comparison
+ 
+| Metric | Single-Cycle | Pipelined |
+|---|---|---|
+| Clock | 50 MHz | 100 MHz |
+| WNS | +0.339 ns | +0.122 ns |
+| LUTs (logic) | 2,021 | 2,111 |
+| Flip Flops | 1,116 | 1,678 |
+| Hazard Handling | N/A | Forwarding, stall, flush |
+ 
+## Toolchain
+ 
+| Tool | Purpose |
 |---|---|
-| Clock | 50 MHz |
-| LUTs | 2,222 (~3.5% of available) |
-| Timing | All constraints met (WNS = +0.271 ns) |
-| Memory | Distributed RAM (combinational read) |
+| Verilog | RTL implementation |
+| [cocotb](https://www.cocotb.org/) | Python-based testbenches |
+| [Verilator](https://www.veripool.org/verilator/)| Simulation |
+| Vivado 2025.2 | Synthesis and implementation |
+| Nexys A7 (XC7A100T) | Target FPGA |
+| RISC-V GCC | Assembly and linking |
+| [Venus](https://venus.kvakil.me/) | RISC-V assembly simulation |
+
 
 ### FPGA Demo
 
-The synthesized design includes a debug interface that allows register inspection directly on the board:
+The synthesized design includes a debug interface that allows register inspection directly on the board. A subdirectory in each of the RTL directories holds required modules along with the topper to allow the following functionalities:
 
 - **8-digit 7-segment display** shows the 32-bit value of the selected register in hexadecimal
 - **LEDs [4:0]** show the currently selected register number in binary
 - **Two buttons** cycle forward and backward through all 32 registers
 - **CPU_RESETN** resets the processor
 
-All register values were verified on hardware against the expected output of the test program.
+IO ports are constrained as false paths so the timing results reflect the core logic for the respective implementations rather than board-level IO delays.
