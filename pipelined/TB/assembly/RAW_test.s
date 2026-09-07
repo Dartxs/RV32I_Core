@@ -131,13 +131,14 @@ store_test:
     lb x29, 7(x26) 		# x29 = mem[11] (sign extended) = 0xFFFFFFBE
     lhu x30, 6(x26) 	# x30 = mem[11:10] = 0xBEEF
     lbu x31, 7(x26) 	# x31 = mem[11] = 0xBE
+    addi x31, x31, 6    # x31 = 0xBE + 6 = 0xC4 
     
-done: (0x194)
+done: #(0x198)
     jal x0, done    	# infinite loop, test sequence done
     nop
     nop
 
-fail: (0x19c)
+fail: #(0x1A0)
 	jal x0, fail		# infinite loop, test error
     nop
     nop

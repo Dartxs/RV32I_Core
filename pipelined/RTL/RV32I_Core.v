@@ -5,15 +5,12 @@ module RV32I_Core(
     );
 
     wire [31:0] PC, PCp4, next_PC;
+    wire flush;
 
     wire [31:0] instr;
 
     wire flushFD, flushDE;
-    wire stallFD, stallDE;
-    assign flushFD = 1'b0;
-    assign flushDE = 1'b0;
-    assign stallFD = 1'b0;
-    assign stallDE = 1'b0;
+    wire stallF, stallFD;
 
     wire [31:0] instrD, PCD, PCp4D;
 
@@ -23,14 +20,14 @@ module RV32I_Core(
     wire [31:0] imm;
 
     wire [1:0] writeback_ctrl;
-    wire ALUSrcA_Sel, ALUSrcB_Sel, mem_write, mem_read, reg_write, jal, jalr, check_branch;
+    wire ALUSrcA_Sel, ALUSrcB_Sel, mem_write, reg_write, jal, jalr, check_branch;
 
     wire [31:0] op1, op2;
 
     wire [2:0] branch_op;
     wire [3:0] ALU_op;
 
-    wire ALUSrcA_SelE, ALUSrcB_SelE, mem_writeE, mem_readE, reg_writeE, jalE, jalrE, check_branchE;
+    wire ALUSrcA_SelE, ALUSrcB_SelE, mem_writeE, reg_writeE, jalE, jalrE, check_branchE;
     wire [1:0] writeback_ctrlE;
     wire [2:0] branch_opE, funct3E;
     wire [3:0] ALU_opE;
@@ -43,7 +40,7 @@ module RV32I_Core(
 
     wire branch_taken;
 
-    wire mem_writeM, mem_readM, reg_writeM;
+    wire mem_writeM, reg_writeM;
     wire [1:0] writeback_ctrlM;
     wire [2:0] funct3M;
     wire [4:0] rdM;
@@ -68,12 +65,14 @@ module RV32I_Core(
         .imm(immE),
         .PC(PCE),
         .PCp4(PCp4),
+        .flush(flush),  //output
         .next_PC(next_PC)   //output
     );
 
     PC_Reg pc_reg(
         .clk(clk),
         .rst_n(rst_n),
+        .stallF(stallF),
         .next_PC(next_PC), 
         .PC(PC),    //output 
         .PCp4(PCp4)    //output
@@ -88,8 +87,8 @@ module RV32I_Core(
     IF_ID if_id(
         .clk(clk),
         .rst_n(rst_n),
-        .flush(flushFD),
-        .stall(stallFD),
+        .flushFD(flushFD),
+        .stallFD(stallFD),
         .instrF(instr),
         .PCF(PC),
         .PCp4F(PCp4),
@@ -115,7 +114,6 @@ module RV32I_Core(
         .ALUSrcA_Sel(ALUSrcA_Sel),  //output
         .ALUSrcB_Sel(ALUSrcB_Sel),  //output
         .mem_write(mem_write),  //output
-        .mem_read(mem_read),    //output
         .reg_write(reg_write),  //output
         .jal(jal),  //output
         .jalr(jalr), //output
@@ -147,12 +145,10 @@ module RV32I_Core(
     ID_EX id_ex(
         .clk(clk),
         .rst_n(rst_n),
-        .flush(flushDE),
-        .stall(stallDE),
+        .flushDE(flushDE),
         .ALUSrcA_SelD(ALUSrcA_Sel),
         .ALUSrcB_SelD(ALUSrcB_Sel),
         .mem_writeD(mem_write),
-        .mem_readD(mem_read),
         .reg_writeD(reg_write),
         .jalD(jal),
         .jalrD(jalr),
@@ -172,7 +168,6 @@ module RV32I_Core(
         .ALUSrcA_SelE(ALUSrcA_SelE),    //output
         .ALUSrcB_SelE(ALUSrcB_SelE),    //output
         .mem_writeE(mem_writeE),    //output
-        .mem_readE(mem_readE),  //output
         .reg_writeE(reg_writeE),    //output
         .jalE(jalE),    //output
         .jalrE(jalrE),  //output
@@ -230,7 +225,6 @@ module RV32I_Core(
         .clk(clk),
         .rst_n(rst_n),
         .mem_writeE(mem_writeE),
-        .mem_readE(mem_readE),
         .reg_writeE(reg_writeE),
         .writeback_ctrlE(writeback_ctrlE),
         .funct3E(funct3E),
@@ -239,7 +233,6 @@ module RV32I_Core(
         .PCp4E(PCp4E),
         .op2E(op2E),
         .mem_writeM(mem_writeM),    //output
-        .mem_readM(mem_readM),  //output
         .reg_writeM(reg_writeM),    //output
         .writeback_ctrlM(writeback_ctrlM),  //output
         .funct3M(funct3M),  //output
@@ -253,7 +246,6 @@ module RV32I_Core(
         .clk(clk),  
         .rst_n(rst_n),
         .mem_write(mem_writeM),
-        .mem_read(mem_readM),
         .funct3(funct3M),
         .address(ALU_outM),
         .write_data(op2M),
@@ -288,10 +280,19 @@ module RV32I_Core(
     Hazard_Unit hazard_unit(
         .reg_writeM(reg_writeM),
         .reg_writeW(reg_writeW),
+        .flush(flush),
+        .writeback_ctrlE(writeback_ctrlE),
+        .rs1D(rs1),
+        .rs2D(rs2),
         .rs1E(rs1E),
         .rs2E(rs2E),
+        .rdE(rdE),
         .rdM(rdM),
         .rdW(rdW),
+        .stallF(stallF),    //output
+        .stallFD(stallFD),  //output
+        .flushFD(flushFD),  //output
+        .flushDE(flushDE),  //output
         .forwardA(forwardA),    //output
         .forwardB(forwardB) //output
     );

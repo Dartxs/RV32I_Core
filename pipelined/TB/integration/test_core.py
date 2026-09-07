@@ -40,7 +40,7 @@ EXPECTED_REGS = {
     28: 0xFFFFBEEF,
     29: 0xFFFFFFBE,
     30: 0x0000BEEF,
-    31: 0x000000BE
+    31: 0x000000C4
 }
 
 # State of memory at EOP
@@ -49,8 +49,8 @@ EXPECTED_MEM = {
     2: 0xBEEFEFEF
 }
 
-DONE_PC = 0x194  # PC should stay at this count at the end with no branch/jal errors
-FAIL_PC = 0x19C  # PC stays at this count if there are branch/jal errors
+DONE_PC = 0xE4  # PC should stay at this count at the end with no branch/jal errors
+FAIL_PC = 0xE8 # PC stays at this count if there are branch/jal errors
 TIMEOUT = 1000  # cycles before timeout
 
 async def init_test(dut):
@@ -68,12 +68,12 @@ async def run_program(dut):
         PC = int(dut.PC.value)
 
         if (PC == DONE_PC):
-            for _ in range(5):
+            for _ in range(10):
                 await tick(dut) # Let any remaining instructions finish executing
             return 'done', cycles
         
         if (PC == FAIL_PC):
-            for _ in range(5):
+            for _ in range(10):
                 await tick(dut) # Let any remaining instructions finish executing
             return 'fail', cycles
         

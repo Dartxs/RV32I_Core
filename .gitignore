@@ -12,3 +12,5 @@ sim_build/
 *.mem
 self.txt
 *.vcd
+
+*.fst

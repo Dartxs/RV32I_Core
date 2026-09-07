@@ -1,5 +1,5 @@
 module Data_Memory(
-    input clk, rst_n, mem_write, mem_read,
+    input clk, rst_n, mem_write, 
     input [2:0] funct3,
     input [31:0] address, write_data,
     output reg [31:0] mem_out
@@ -11,7 +11,6 @@ module Data_Memory(
     Mem_Aligner mem_aligner(.funct3(funct3), .address(address[1:0]), .aligned(aligned), .sign(sign), .byte_ena(byte_ena));
 
     wire write_ena = (mem_write && aligned);
-    wire read_ena = (mem_read && aligned);
 
     reg [31:0] memory [0:2047]; //2048 words (8192 bytes)
 
@@ -39,7 +38,7 @@ module Data_Memory(
     always @(*) begin
         mem_out = 32'b0;
 
-        if(read_ena) begin
+        if(aligned) begin
             case(byte_ena)
                 4'b1111: mem_out = word; //load word
                 4'b1100: begin

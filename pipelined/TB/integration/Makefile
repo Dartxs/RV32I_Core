@@ -28,4 +28,7 @@ COCOTB_TEST_MODULES = test_core
 
 export PYTHONPATH := $(abspath ..):$(PYTHONPATH)
 
+COMPILE_ARGS += --trace --trace-fst --trace-structs
+SIM_ARGS += --trace
+
 include $(shell cocotb-config --makefiles)/Makefile.sim

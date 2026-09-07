@@ -1,6 +1,7 @@
 module PC_MUX(
     input jal, jalr, branch_taken,
-    input [31:0] op1, imm, PC, PCp4, //PC should be passed from execute stage for jump or branch
+    input [31:0] op1, imm, PC, PCp4, //op1, imm, PC should be passed from execute stage for jump or branch
+    output flush,
     output reg [31:0] next_PC
     );
 
@@ -8,6 +9,8 @@ module PC_MUX(
 
     assign PC_BR_JAL = PC + imm;
     assign PC_JALR = op1 + imm;
+
+    assign flush = jal || jalr || branch_taken;
 
     always @(*) begin
         if(jal || branch_taken)
