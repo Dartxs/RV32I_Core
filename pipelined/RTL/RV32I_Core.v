@@ -34,7 +34,7 @@ module RV32I_Core(
     wire [4:0] rdE, rs1E, rs2E;
     wire [31:0] PCE, PCp4E, immE, op1E, op2E;
 
-    wire [31:0] ALUSrcA, ALUSrcB;
+    wire [31:0] EX_dataA, EX_dataB;
 
     wire [31:0] ALU_out;
 
@@ -191,7 +191,7 @@ module RV32I_Core(
         .reg_out(op1E),
         .ALU_outM(ALU_outM),
         .writeback_data(writeback_data),
-        .op(ALUSrcA)    //output
+        .op(EX_dataA)    //output
     );
 
     Forwarding_MUX forwarding_muxB(
@@ -199,15 +199,15 @@ module RV32I_Core(
         .reg_out(op2E),
         .ALU_outM(ALU_outM),
         .writeback_data(writeback_data),
-        .op(ALUSrcB)    //output
+        .op(EX_dataB)    //output
     );
     
     ALU alu(
         .ALUSrcA_Sel(ALUSrcA_SelE),
         .ALUSrcB_Sel(ALUSrcB_SelE),
         .ALU_op(ALU_opE),
-        .op1(ALUSrcA),
-        .op2(ALUSrcB),
+        .op1(EX_dataA),
+        .op2(EX_dataB),
         .PC(PCE),
         .imm(immE),
         .ALU_out(ALU_out) //output
@@ -216,8 +216,8 @@ module RV32I_Core(
     Branch_Unit branch_unit(
         .check_branch(check_branchE),
         .branch_op(branch_opE),
-        .op1(op1E),
-        .op2(op2E),
+        .op1(EX_dataA),
+        .op2(EX_dataB),
         .branch_taken(branch_taken) //output
     );
 
@@ -231,7 +231,7 @@ module RV32I_Core(
         .rdE(rdE),
         .ALU_outE(ALU_out),
         .PCp4E(PCp4E),
-        .op2E(op2E),
+        .op2E(EX_dataB),
         .mem_writeM(mem_writeM),    //output
         .reg_writeM(reg_writeM),    //output
         .writeback_ctrlM(writeback_ctrlM),  //output
